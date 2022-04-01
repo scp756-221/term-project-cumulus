@@ -71,16 +71,16 @@ def update_user(user_id):
                         mimetype='application/json')
     try:
         content = request.get_json()
-        email = content['email']
-        fname = content['fname']
-        lname = content['lname']
+        name = content['sname']
+        email = content['semail']
+        lid = content['lid']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][3]
     response = requests.put(
         url,
         params={"objtype": "user", "objkey": user_id},
-        json={"email": email, "fname": fname, "lname": lname})
+        json={"semail": email, "sname": name, "lid": lid})
     return (response.json())
 
 
