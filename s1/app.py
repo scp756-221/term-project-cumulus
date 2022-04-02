@@ -71,16 +71,16 @@ def update_user(user_id):
                         mimetype='application/json')
     try:
         content = request.get_json()
+        name = content['name']
         email = content['email']
-        fname = content['fname']
-        lname = content['lname']
+        mobile = content['mobile']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][3]
     response = requests.put(
         url,
         params={"objtype": "user", "objkey": user_id},
-        json={"email": email, "fname": fname, "lname": lname})
+        json={"name": name, "email": email, "mobile": mobile})
     return (response.json())
 
 
@@ -95,7 +95,7 @@ def create_user():
         content = request.get_json()
         name = content['name']
         email = content['email']
-        phno = content['phno']
+        mobile = content['mobile']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
@@ -104,7 +104,7 @@ def create_user():
         json={"objtype": "user",
               "name": name,
               "email": email,
-              "phno": phno})
+              "mobile": mobile})
     return (response.json())
 
 
