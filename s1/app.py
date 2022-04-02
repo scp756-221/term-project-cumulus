@@ -88,7 +88,7 @@ def update_user(user_id):
 def create_user():
     """
     Create a user.
-    If a record already exists with the same fname, lname, and email,
+    If a record already exists with the same name, email, and mobile,
     the old UUID is replaced with a new one.
     """
     try:
