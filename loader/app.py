@@ -50,19 +50,19 @@ def create_user(name, email, mobile, uuid):
     return (response.json())
 
 
-def create_song(artist, title, uuid):
+def create_booklist(author, title, uuid):
     """
     Create a song.
-    If a record already exists with the same artist and title,
+    If a record already exists with the same author and title,
     the old UUID is replaced with this one.
     """
     url = db['name'] + '/load'
     response = requests.post(
         url,
         auth=build_auth(),
-        json={"objtype": "music",
-              "Artist": artist,
-              "SongTitle": title,
+        json={"objtype": "Book",
+              "Author": author,
+              "BookTitle": title,
               "uuid": uuid})
     return (response.json())
 
@@ -95,15 +95,15 @@ if __name__ == '__main__':
                                                                   email,
                                                                   uuid))
 
-    with open('{}/music/music.csv'.format(resource_dir), 'r') as inp:
+    with open('{}/books/books.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for artist, title, uuid in rdr:
-            resp = create_song(artist.strip(),
+        for author, title, uuid in rdr:
+            resp = create_booklist(author.strip(),
                                title.strip(),
                                uuid.strip())
-            resp = check_resp(resp, 'music_id')
+            resp = check_resp(resp, 'book_id')
             if resp is None or resp != uuid:
-                print('Error creating song {} {}, {}'.format(artist,
+                print('Error creating booklist {} {}, {}'.format(author,
                                                              title,
                                                              uuid))
