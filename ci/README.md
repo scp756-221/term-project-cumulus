@@ -6,7 +6,7 @@ This directory contains the continuous integration (CI) framework. It includes t
 
 The automatic CI is defined by the following GitHub Action files:
 
-* `../.github/workflows/ci-system-v*.yaml`: GitHub Action Specification of systemic CI using a local DynamoDB for a given version.
+* `../.github/workflows/ci-system-v*.yaml`: GitHub Action Specification of systemic CI, using a local DynamoDB for a given version.
 
 The top level of the CI is run by:
 
