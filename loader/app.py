@@ -83,16 +83,15 @@ if __name__ == '__main__':
     with open('{}/users/users.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for fn, ln, email, uuid in rdr:
-            resp = create_user(fn.strip(),
-                               ln.strip(),
+        for name, email, mobile, uuid in rdr:
+            resp = create_user(name.strip(),
                                email.strip(),
-                               uuid.strip())
+                               mobile.strip())
             resp = check_resp(resp, 'user_id')
             if resp is None or resp != uuid:
-                print('Error creating user {} {} ({}), {}'.format(fn,
-                                                                  ln,
+                print('Error creating user {} {} ({}), {}'.format(name,
                                                                   email,
+                                                                  mobile,
                                                                   uuid))
 
     with open('{}/books/books.csv'.format(resource_dir), 'r') as inp:
