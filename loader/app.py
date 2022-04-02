@@ -32,7 +32,7 @@ def build_auth():
     return requests.auth.HTTPBasicAuth('svc-loader', loader_token)
 
 
-def create_user(lname, fname, email, uuid):
+def create_user(name, email, mobile, uuid):
     """
     Create a user.
     If a record already exists with the same fname, lname, and email,
@@ -43,9 +43,9 @@ def create_user(lname, fname, email, uuid):
         url,
         auth=build_auth(),
         json={"objtype": "user",
-              "lname": lname,
+              "name": name,
               "email": email,
-              "fname": fname,
+              "mobile": mobile,
               "uuid": uuid})
     return (response.json())
 
