@@ -1,6 +1,6 @@
 """
 SFU CMPT 756
-Sample application---music service.
+Sample application---books service.
 """
 
 # Standard library modules
@@ -29,7 +29,7 @@ PERCENT_ERROR = 50
 app = Flask(__name__)
 
 metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'Music process')
+metrics.info('app_info', 'Books process')
 
 db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
@@ -62,7 +62,7 @@ def list_all():
         return Response(json.dumps({"error": "missing auth"}),
                         status=401,
                         mimetype='application/json')
-    # list all songs here
+    # list all books here
     return {}
 
 
