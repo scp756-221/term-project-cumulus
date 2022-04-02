@@ -93,18 +93,18 @@ def create_user():
     """
     try:
         content = request.get_json()
-        name = content['sname']
-        email = content['semail']
-        lid = content['lid']
+        name = content['name']
+        email = content['email']
+        phno = content['phno']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
         json={"objtype": "user",
-              "sname": name,
-              "semail": email,
-              "lid": lid})
+              "name": name,
+              "email": email,
+              "phno": phno})
     return (response.json())
 
 
