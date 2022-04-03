@@ -50,7 +50,7 @@ def create_user(name, email, mobile, uuid):
     return (response.json())
 
 
-def create_booklist(author, title, uuid):
+def create_booklist(author, title, availability, uuid):
     """
     Create a song.
     If a record already exists with the same author and title,
@@ -63,6 +63,7 @@ def create_booklist(author, title, uuid):
         json={"objtype": "Book",
               "Author": author,
               "BookTitle": title,
+              "Availability": availability,
               "uuid": uuid})
     return (response.json())
 
@@ -98,12 +99,14 @@ if __name__ == '__main__':
     with open('{}/books/books.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for author, title, uuid in rdr:
+        for author, title, availability, uuid in rdr:
             resp = create_booklist(author.strip(),
                                title.strip(),
+                               availability.strip(),
                                uuid.strip())
             resp = check_resp(resp, 'book_id')
             if resp is None or resp != uuid:
                 print('Error creating booklist {} {}, {}'.format(author,
                                                              title,
+                                                             availability,
                                                              uuid))
