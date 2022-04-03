@@ -80,7 +80,7 @@ def lend_book():
         return json.dumps({"message": "error reading arguments"})
 	if (IsAvailable == True):
 		url = db['name'] + '/' + db['endpoint'][1]
-		response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "IsAvailable": False },
+		response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 	else:
