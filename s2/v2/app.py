@@ -66,15 +66,15 @@ def list_all():
     return {}
 
 
-@bp.route('/<music_id>', methods=['GET'])
-def get_song(music_id):
+@bp.route('/<book_id>', methods=['GET'])
+def get_book(book_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
         return Response(json.dumps({"error": "missing auth"}),
                         status=401,
                         mimetype='application/json')
-    payload = {"objtype": "music", "objkey": music_id}
+    payload = {"objtype": "Book", "objkey": book_id}
 
     # This version will return 500 for a fraction of its calls
     if random.randrange(100) < PERCENT_ERROR:
