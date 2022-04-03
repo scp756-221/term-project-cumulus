@@ -1,6 +1,6 @@
 """
 SFU CMPT 756
-Sample application---user service.
+Sample application---Checkout service.
 """
 
 # Standard library modules
@@ -75,16 +75,16 @@ def lend_book():
         content = request.get_json()
         Author = content['Author']
         BookTitle = content['BookTitle']
-		IsAvailable = content['Available']
+        IsAvailable = content['Available']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
-	if (IsAvailable == True):
-		url = db['name'] + '/' + db['endpoint'][1]
-		response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
+    if (IsAvailable == True):
+        url = db['name'] + '/' + db['endpoint'][1]
+        response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
         headers={'Authorization': headers['Authorization']})
-    return (response.json())
-	else:
-		return json.dumps({"message": "Book is not currently available for lending"})
+        return (response.json())
+    else:
+        return json.dumps({"message": "Book is not currently available for lending"})
 
 
 @bp.route('/returnBook', methods=['POST'])
@@ -138,7 +138,7 @@ def logoff():
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/user/')
+app.register_blueprint(bp, url_prefix='/api/v1/checkout/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
