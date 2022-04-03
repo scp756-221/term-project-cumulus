@@ -78,7 +78,7 @@ def get_book(book_id):
 
     # This version will return 500 for a fraction of its calls
     if random.randrange(100) < PERCENT_ERROR:
-        return Response(json.dumps({"error": "get_song failed"}),
+        return Response(json.dumps({"error": "get_book failed"}),
                         status=500,
                         mimetype='application/json')
 
