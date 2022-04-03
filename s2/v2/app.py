@@ -100,20 +100,21 @@ def create_booklist():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        Author = content['Author']
-        BookTitle = content['BookTitle']
+        Author = content['author']
+        BookTitle = content['title']
+        Availability = content['available']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
-        json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle},
+        json={"objtype": "Book", "author": Author, "title": BookTitle, "available": Availability },
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
 
 @bp.route('/<book_id>', methods=['DELETE'])
-def delete_song(book_id):
+def delete_book(book_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
