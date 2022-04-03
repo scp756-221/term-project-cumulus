@@ -71,16 +71,16 @@ def update_user(user_id):
                         mimetype='application/json')
     try:
         content = request.get_json()
-        name = content['sname']
-        email = content['semail']
-        lid = content['lid']
+        name = content['name']
+        email = content['email']
+        mobile = content['mobile']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][3]
     response = requests.put(
         url,
         params={"objtype": "user", "objkey": user_id},
-        json={"semail": email, "sname": name, "lid": lid})
+        json={"name": name, "email": email, "mobile": mobile})
     return (response.json())
 
 
@@ -88,23 +88,23 @@ def update_user(user_id):
 def create_user():
     """
     Create a user.
-    If a record already exists with the same fname, lname, and email,
+    If a record already exists with the same name, email, and mobile,
     the old UUID is replaced with a new one.
     """
     try:
         content = request.get_json()
-        name = content['sname']
-        email = content['semail']
-        lid = content['lid']
+        name = content['name']
+        email = content['email']
+        mobile = content['mobile']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
         json={"objtype": "user",
-              "sname": name,
-              "semail": email,
-              "lid": lid})
+              "name": name,
+              "email": email,
+              "mobile": mobile})
     return (response.json())
 
 

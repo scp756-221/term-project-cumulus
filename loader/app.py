@@ -32,7 +32,7 @@ def build_auth():
     return requests.auth.HTTPBasicAuth('svc-loader', loader_token)
 
 
-def create_user(lname, fname, email, uuid):
+def create_user(name, email, mobile, uuid):
     """
     Create a user.
     If a record already exists with the same fname, lname, and email,
@@ -43,26 +43,26 @@ def create_user(lname, fname, email, uuid):
         url,
         auth=build_auth(),
         json={"objtype": "user",
-              "lname": lname,
+              "name": name,
               "email": email,
-              "fname": fname,
+              "mobile": mobile,
               "uuid": uuid})
     return (response.json())
 
 
-def create_song(artist, title, uuid):
+def create_booklist(author, title, uuid):
     """
     Create a song.
-    If a record already exists with the same artist and title,
+    If a record already exists with the same author and title,
     the old UUID is replaced with this one.
     """
     url = db['name'] + '/load'
     response = requests.post(
         url,
         auth=build_auth(),
-        json={"objtype": "music",
-              "Artist": artist,
-              "SongTitle": title,
+        json={"objtype": "Book",
+              "Author": author,
+              "BookTitle": title,
               "uuid": uuid})
     return (response.json())
 
@@ -83,27 +83,27 @@ if __name__ == '__main__':
     with open('{}/users/users.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for fn, ln, email, uuid in rdr:
-            resp = create_user(fn.strip(),
-                               ln.strip(),
+        for name, email, mobile, uuid in rdr:
+            resp = create_user(name.strip(),
                                email.strip(),
-                               uuid.strip())
+                               mobile.strip(),
+							   uuid.strip())
             resp = check_resp(resp, 'user_id')
             if resp is None or resp != uuid:
-                print('Error creating user {} {} ({}), {}'.format(fn,
-                                                                  ln,
+                print('Error creating user {} {} ({}), {}'.format(name,
                                                                   email,
+                                                                  mobile,
                                                                   uuid))
 
-    with open('{}/music/music.csv'.format(resource_dir), 'r') as inp:
+    with open('{}/books/books.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for artist, title, uuid in rdr:
-            resp = create_song(artist.strip(),
+        for author, title, uuid in rdr:
+            resp = create_booklist(author.strip(),
                                title.strip(),
                                uuid.strip())
-            resp = check_resp(resp, 'music_id')
+            resp = check_resp(resp, 'book_id')
             if resp is None or resp != uuid:
-                print('Error creating song {} {}, {}'.format(artist,
+                print('Error creating booklist {} {}, {}'.format(author,
                                                              title,
                                                              uuid))
