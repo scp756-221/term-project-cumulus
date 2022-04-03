@@ -35,7 +35,7 @@ db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
     "endpoint": [
         "lend",
-        "write",
+        "returnBook",
         "delete",
         "update"
     ]
@@ -102,7 +102,7 @@ def return_book():
     except Exception:
         return json.dumps({"message": "error reading arguments"})
         
-    url = db['name'] + '/' + db['endpoint'][1]
+    url = db['name'] + '/' + db['endpoint'][2]
     response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": True },
     headers={'Authorization': headers['Authorization']})
     return (response.json())
