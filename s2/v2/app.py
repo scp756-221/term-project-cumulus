@@ -78,7 +78,7 @@ def get_book(book_id):
 
     # This version will return 500 for a fraction of its calls
     if random.randrange(100) < PERCENT_ERROR:
-        return Response(json.dumps({"error": "get_song failed"}),
+        return Response(json.dumps({"error": "get_book failed"}),
                         status=500,
                         mimetype='application/json')
 
@@ -112,8 +112,8 @@ def create_booklist():
     return (response.json())
 
 
-@bp.route('/<music_id>', methods=['DELETE'])
-def delete_song(music_id):
+@bp.route('/<book_id>', methods=['DELETE'])
+def delete_song(book_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -123,7 +123,7 @@ def delete_song(music_id):
     url = db['name'] + '/' + db['endpoint'][2]
     response = requests.delete(
         url,
-        params={"objtype": "music", "objkey": music_id},
+        params={"objtype": "Book", "objkey": book_id},
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
@@ -131,7 +131,7 @@ def delete_song(music_id):
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/music/')
+app.register_blueprint(bp, url_prefix='/api/v1/book/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
