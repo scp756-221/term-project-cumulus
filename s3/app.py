@@ -85,6 +85,27 @@ def lend_book():
     return (response.json())
 	else:
 		return json.dumps({"message": "Book is not currently available for lending"})
+
+
+@bp.route('/returnBook', methods=['POST'])
+def return_book():
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    try:
+        content = request.get_json()
+        Author = content['Author']
+        BookTitle = content['BookTitle']
+    except Exception:
+        return json.dumps({"message": "error reading arguments"})
+        
+    url = db['name'] + '/' + db['endpoint'][1]
+    response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": True },
+    headers={'Authorization': headers['Authorization']})
+    return (response.json())
 	
     
 
