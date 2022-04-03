@@ -91,7 +91,7 @@ def get_song(music_id):
 
 
 @bp.route('/', methods=['POST'])
-def create_song():
+def create_booklist():
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -100,14 +100,14 @@ def create_song():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        Artist = content['Artist']
-        SongTitle = content['SongTitle']
+        Author = content['Author']
+        BookTitle = content['BookTitle']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
-        json={"objtype": "music", "Artist": Artist, "SongTitle": SongTitle},
+        json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle},
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
