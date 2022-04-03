@@ -100,15 +100,15 @@ def create_booklist():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        Author = content['author']
-        BookTitle = content['title']
-        Availability = content['available']
+        author = content['author']
+        title = content['title']
+        availability = content['availability']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
-        json={"objtype": "Book", "author": Author, "title": BookTitle, "available": Availability },
+        json={"objtype": "Book", "author": author, "title": title, "availability": availability },
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 

@@ -61,9 +61,9 @@ def create_booklist(author, title, availability, uuid):
         url,
         auth=build_auth(),
         json={"objtype": "Book",
-              "Author": author,
-              "BookTitle": title,
-              "Availability": availability,
+              "author": author,
+              "title": title,
+              "availability": availability,
               "uuid": uuid})
     return (response.json())
 

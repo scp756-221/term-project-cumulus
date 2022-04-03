@@ -73,14 +73,14 @@ def lend_book():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        Author = content['Author']
-        BookTitle = content['BookTitle']
-        IsAvailable = content['Available']
+        author = content['author']
+        title = content['title']
+        availability = content['availability']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
-    if (IsAvailable == True):
+    if (availability == True):
         url = db['name'] + '/' + db['endpoint'][1]
-        response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
+        response = requests.post(url, json={"objtype": "Book", "author": author, "title": title, "availability": False },
         headers={'Authorization': headers['Authorization']})
         return (response.json())
     else:
@@ -97,13 +97,13 @@ def return_book():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        Author = content['Author']
-        BookTitle = content['BookTitle']
+        author = content['author']
+        title = content['title']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
         
     url = db['name'] + '/' + db['endpoint'][2]
-    response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": True },
+    response = requests.post(url, json={"objtype": "Book", "author": author, "title": title, "availability": True },
     headers={'Authorization': headers['Authorization']})
     return (response.json())
 	
