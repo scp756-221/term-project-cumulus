@@ -86,7 +86,8 @@ if __name__ == '__main__':
         for name, email, mobile, uuid in rdr:
             resp = create_user(name.strip(),
                                email.strip(),
-                               mobile.strip())
+                               mobile.strip(),
+							   uuid.strip())
             resp = check_resp(resp, 'user_id')
             if resp is None or resp != uuid:
                 print('Error creating user {} {} ({}), {}'.format(name,
