@@ -4,16 +4,16 @@
       "tableMusic": {
         "Type": "AWS::DynamoDB::Table",
         "Properties": {
-          "TableName": "Music-ZZ-REG-ID",
+          "TableName": "Book-ZZ-REG-ID",
           "AttributeDefinitions": [
             {
-              "AttributeName": "music_id",
+              "AttributeName": "book_id",
               "AttributeType": "S"
             }
           ],
           "KeySchema": [
             {
-              "AttributeName": "music_id",
+              "AttributeName": "book_id",
               "KeyType": "HASH"
             }
           ],
