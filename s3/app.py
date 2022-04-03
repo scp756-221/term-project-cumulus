@@ -1,6 +1,6 @@
 """
 SFU CMPT 756
-Sample application---user service.
+Sample application---Checkout service.
 """
 
 # Standard library modules
@@ -35,7 +35,7 @@ db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
     "endpoint": [
         "lend",
-        "write",
+        "returnBook",
         "delete",
         "update"
     ]
@@ -75,16 +75,37 @@ def lend_book():
         content = request.get_json()
         Author = content['Author']
         BookTitle = content['BookTitle']
-		IsAvailable = content['Available']
+        IsAvailable = content['Available']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
-	if (IsAvailable == True):
-		url = db['name'] + '/' + db['endpoint'][1]
-		response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
+    if (IsAvailable == True):
+        url = db['name'] + '/' + db['endpoint'][1]
+        response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": False },
         headers={'Authorization': headers['Authorization']})
+        return (response.json())
+    else:
+        return json.dumps({"message": "Book is not currently available for lending"})
+
+
+@bp.route('/returnBook', methods=['POST'])
+def return_book():
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    try:
+        content = request.get_json()
+        Author = content['Author']
+        BookTitle = content['BookTitle']
+    except Exception:
+        return json.dumps({"message": "error reading arguments"})
+        
+    url = db['name'] + '/' + db['endpoint'][2]
+    response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "Available": True },
+    headers={'Authorization': headers['Authorization']})
     return (response.json())
-	else:
-		return json.dumps({"message": "Book is not currently available for lending"})
 	
     
 
@@ -117,7 +138,7 @@ def logoff():
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/user/')
+app.register_blueprint(bp, url_prefix='/api/v1/checkout/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
