@@ -27,14 +27,14 @@ import simplejson as json
 app = Flask(__name__)
 
 metrics = PrometheusMetrics(app)
-metrics.info('app_info', 'User process')
+metrics.info('app_info', 'Checkout process')
 
 bp = Blueprint('app', __name__)
 
 db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
     "endpoint": [
-        "read",
+        "lend",
         "write",
         "delete",
         "update"
@@ -62,9 +62,31 @@ def readiness():
     return Response("", status=200, mimetype="application/json")
 
 
-@bp.route('/<user_id>', methods=['PUT'])
-def update_user(user_id):
-    pass
+
+@bp.route('/lend', methods=['POST'])
+def lend_book():
+    headers = request.headers
+    # check header here
+    if 'Authorization' not in headers:
+        return Response(json.dumps({"error": "missing auth"}),
+                        status=401,
+                        mimetype='application/json')
+    try:
+        content = request.get_json()
+        Author = content['Author']
+        BookTitle = content['BookTitle']
+		IsAvailable = content['Available']
+    except Exception:
+        return json.dumps({"message": "error reading arguments"})
+	if (IsAvailable == True):
+		url = db['name'] + '/' + db['endpoint'][1]
+		response = requests.post(url, json={"objtype": "Book", "Author": Author, "BookTitle": BookTitle, "IsAvailable": False },
+        headers={'Authorization': headers['Authorization']})
+    return (response.json())
+	else:
+		return json.dumps({"message": "Book is not currently available for lending"})
+	
+    
 
 
 @bp.route('/', methods=['POST'])
