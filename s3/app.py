@@ -62,7 +62,6 @@ def readiness():
     return Response("", status=200, mimetype="application/json")
 
 
-
 @bp.route('/lend', methods=['POST'])
 def lend_book():
     headers = request.headers
@@ -107,33 +106,6 @@ def return_book():
     headers={'Authorization': headers['Authorization']})
     return (response.json())
 	
-    
-
-
-@bp.route('/', methods=['POST'])
-def create_user():
-    pass
-
-
-@bp.route('/<user_id>', methods=['DELETE'])
-def delete_user(user_id):
-    pass
-
-
-@bp.route('/<user_id>', methods=['GET'])
-def get_user(user_id):
-    pass
-
-
-@bp.route('/login', methods=['PUT'])
-def login():
-    pass
-
-
-@bp.route('/logoff', methods=['PUT'])
-def logoff():
-    pass
-
 
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
