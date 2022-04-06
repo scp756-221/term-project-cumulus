@@ -1,6 +1,6 @@
-author,title,availability,uuid
-Brandon Weaver,Swann's Way,True,e30c3ef8-b391-11ec-b909-0242ac120002
-Anthony Graham,Still Life with Woodpecker,True,e30c41f0-b391-11ec-b909-0242ac120002
-Jeremy Howard,The Secret of the Old Clock,True,e30c4358-b391-11ec-b909-0242ac120002
-Brittany Harvey,A Christmas Carol,False,e30c447a-b391-11ec-b909-0242ac120002
-Elizabeth Hill,The Physician,True,e30c46f0-b391-11ec-b909-0242ac120002
+author,title,availability,datepublished,uuid
+Brandon Weaver,Swann's Way,TRUE,2006-08-26,e30c3ef8-b391-11ec-b909-0242ac120002
+Anthony Graham,Still Life with Woodpecker,TRUE,2008-01-29,e30c41f0-b391-11ec-b909-0242ac120002
+Jeremy Howard,The Secret of the Old Clock,TRUE,2016-05-02,e30c4358-b391-11ec-b909-0242ac120002
+Brittany Harvey,A Christmas Carol,FALSE,2020-02-16,e30c447a-b391-11ec-b909-0242ac120002
+Elizabeth Hill,The Physician,TRUE,2021-08-28,e30c46f0-b391-11ec-b909-0242ac120002
