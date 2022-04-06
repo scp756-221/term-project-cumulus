@@ -34,8 +34,8 @@ bp = Blueprint('app', __name__)
 db = {
     "name": "http://cmpt756db:30002/api/v1/datastore",
     "endpoint": [
-        "lend",
-        "returnBook",
+        "read",
+        "write",
         "delete",
         "update"
     ]
@@ -62,8 +62,8 @@ def readiness():
     return Response("", status=200, mimetype="application/json")
 
 
-@bp.route('/lend', methods=['POST'])
-def lend_book():
+@bp.route('/lend/<book_id>', methods=['POST'])
+def lend_book(book_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -71,22 +71,30 @@ def lend_book():
                         status=401,
                         mimetype='application/json')
     try:
-        content = request.get_json()
-        author = content['author']
-        title = content['title']
-        availability = content['availability']
+        url = db['name'] + '/' + db['endpoint'][0]
+        response = requests.get(url, params = {"objtype": "book", "objkey": book_id })
+        availability = response.json()['availability']
+
+        if (availability == True):
+            content = request.get_json()
+            author = content['author']
+            title = content['title']
+            db_url = db['name'] + '/' + db['endpoint'][3]
+            response = requests.post(
+                db_url, 
+                params = {"objtype": "book", "objkey": book_id }, 
+                json = {"author": author, "title": title, "availability": False},
+                headers = {'Authorization': headers['Authorization']})
+            return (response.json())
+        else:
+            return json.dumps({"message": "Book is not currently available for lending"})
+
     except Exception:
         return json.dumps({"message": "error reading arguments"})
-    if (availability == True):
-        url = db['name'] + '/' + db['endpoint'][1]
-        response = requests.post(url, json={"objtype": "Book", "author": author, "title": title, "availability": False },
-        headers={'Authorization': headers['Authorization']})
-        return (response.json())
-    else:
-        return json.dumps({"message": "Book is not currently available for lending"})
+    
 
 
-@bp.route('/returnBook', methods=['POST'])
+@bp.route('/return', methods=['POST'])
 def return_book():
     headers = request.headers
     # check header here
@@ -101,7 +109,7 @@ def return_book():
     except Exception:
         return json.dumps({"message": "error reading arguments"})
         
-    url = db['name'] + '/' + db['endpoint'][2]
+    url = db['name'] + '/' + db['endpoint'][3]
     response = requests.post(url, json={"objtype": "Book", "author": author, "title": title, "availability": True },
     headers={'Authorization': headers['Authorization']})
     return (response.json())
