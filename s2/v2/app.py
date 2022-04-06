@@ -91,7 +91,7 @@ def get_book(book_id):
 
 
 @bp.route('/', methods=['POST'])
-def create_booklist():
+def create_book():
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -100,15 +100,16 @@ def create_booklist():
                         mimetype='application/json')
     try:
         content = request.get_json()
-        author = content['author']
-        title = content['title']
-        availability = content['availability']
+        Author = content['author']
+        BookTitle = content['booktitle']
+        Availability = content['availability']
+        DatePublished = content['datepublished']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
-        json={"objtype": "Book", "author": author, "title": title, "availability": availability },
+        json={"objtype": "Book", "author": Author, "booktitle": BookTitle, "availability": Availability,"datepublished": DatePublished },
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
