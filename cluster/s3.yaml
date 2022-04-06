@@ -13,12 +13,6 @@
 # 2. Deployment's .spec.template.spec.containers.livenessProbe & readinessProbe
 #    can be removed to clean up the logs
 #
-# This script is set up for Github's newly announced (and still beta) container
-# registry to side-step DockerHub's throttling of their free accounts.
-# If you wish to switch back to DockerHub, replace ghcr.io with docker.io
-#
-# TODO: You must run the template processor to fill in the template variables "ZZ-*"
-#
 apiVersion: v1
 kind: Service
 metadata:
@@ -27,7 +21,7 @@ metadata:
     app: cmpt756s3
 spec:
   ports:
-  - port: 30005
+  - port: 30000
     name: http
   selector:
     app: cmpt756s3
@@ -61,8 +55,24 @@ spec:
     spec:
       serviceAccountName: svc-s3
       containers:
-      - name: service1
-        image: 'ZZ-CR-ID/ZZ-REG-ID/cmpt756s3:latest'
+      - name: cmpt756s3
+        image: 'ghcr.io/anan786/cmpt756s3:v1'
         imagePullPolicy: Always
         ports:
-        - containerPort: 30005
+        - containerPort: 30000
+        livenessProbe:
+          httpGet:
+            path: /api/v1/checkout/health
+            port: 30000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          failureThreshold: 5
+        readinessProbe:
+          httpGet:
+            path: /api/v1/checkout/readiness
+            port: 30000
+          initialDelaySeconds: 10
+          periodSeconds: 5
+          timeoutSeconds: 2
+          successThreshold: 1
+          failureThreshold: 5

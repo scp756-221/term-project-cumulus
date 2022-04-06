@@ -27,7 +27,7 @@ metadata:
     app: cmpt756s3
 spec:
   ports:
-  - port: 30005
+  - port: 30000
     name: http
   selector:
     app: cmpt756s3
@@ -62,7 +62,7 @@ spec:
       serviceAccountName: svc-s3
       containers:
       - name: service1
-        image: 'ZZ-CR-ID/ZZ-REG-ID/cmpt756s3:latest'
+        image: 'ghcr.io/anan786/cmpt756s3:latest'
         imagePullPolicy: Always
         ports:
-        - containerPort: 30005
+        - containerPort: 30000
