@@ -94,8 +94,8 @@ def lend_book(book_id):
     
 
 
-@bp.route('/return', methods=['POST'])
-def return_book():
+@bp.route('/return/<book_id>', methods=['POST'])
+def return_book(book_id):
     headers = request.headers
     # check header here
     if 'Authorization' not in headers:
@@ -103,17 +103,17 @@ def return_book():
                         status=401,
                         mimetype='application/json')
     try:
-        content = request.get_json()
-        author = content['author']
-        title = content['title']
+        url = db['name'] + '/' + db['endpoint'][3]
+        response = requests.post(
+            url,
+            params = {"objtype": "book", "objkey": book_id },
+            json = {"availability": True},
+            headers = {'Authorization': headers['Authorization']})
+        return (response.json())
+
     except Exception:
         return json.dumps({"message": "error reading arguments"})
-        
-    url = db['name'] + '/' + db['endpoint'][3]
-    response = requests.post(url, json={"objtype": "Book", "author": author, "title": title, "availability": True },
-    headers={'Authorization': headers['Authorization']})
-    return (response.json())
-	
+
 
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
