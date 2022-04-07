@@ -54,6 +54,7 @@ start:	showcontext
 	# This long list of options is the recommendation produced by Google's "My First Cluster"
 	# The lines up to and including "metadata" are required for 756.
 	# The lines after that may or may not be necessary
+	$(GC) services enable container.googleapis.com
 	$(GC) container clusters create $(CLUSTER_NAME) --zone $(ZONE) --num-nodes $(NUM_NODES) \
 	      --cluster-version "$(KVER)" --release-channel "$(REL_CHAN)" \
 	      --machine-type $(MACHINE_TYPE) --image-type $(IMAGE_TYPE) --disk-type $(DISK_TYPE) --disk-size $(DISK_SIZE) \
