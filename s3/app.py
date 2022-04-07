@@ -62,7 +62,7 @@ def readiness():
     return Response("", status=200, mimetype="application/json")
 
 
-@bp.route('/lend/<book_id>', methods=['POST'])
+@bp.route('/lend/<book_id>', methods=['PUT'])
 def lend_book(book_id):
     headers = request.headers
     # check header here
@@ -73,17 +73,17 @@ def lend_book(book_id):
     try:
         url = db['name'] + '/' + db['endpoint'][0]
         response = requests.get(url, params = {"objtype": "book", "objkey": book_id })
-        availability = response.json()['availability']
+        availability = response.json()['Items'][0]['availability']
 
         if (availability == True):
             content = request.get_json()
             author = content['author']
-            title = content['title']
+            booktitle = content['booktitle']
             db_url = db['name'] + '/' + db['endpoint'][3]
-            response = requests.post(
+            response = requests.put(
                 db_url, 
                 params = {"objtype": "book", "objkey": book_id }, 
-                json = {"author": author, "title": title, "availability": False},
+                json = {"author": author, "booktitle": booktitle, "availability": False},
                 headers = {'Authorization': headers['Authorization']})
             return (response.json())
         else:
@@ -94,7 +94,7 @@ def lend_book(book_id):
     
 
 
-@bp.route('/return/<book_id>', methods=['POST'])
+@bp.route('/return/<book_id>', methods=['PUT'])
 def return_book(book_id):
     headers = request.headers
     # check header here
@@ -104,7 +104,7 @@ def return_book(book_id):
                         mimetype='application/json')
     try:
         url = db['name'] + '/' + db['endpoint'][3]
-        response = requests.post(
+        response = requests.put(
             url,
             params = {"objtype": "book", "objkey": book_id },
             json = {"availability": True},
