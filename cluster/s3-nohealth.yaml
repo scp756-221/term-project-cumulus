@@ -27,7 +27,7 @@ metadata:
     app: cmpt756s3
 spec:
   ports:
-  - port: 30000
+  - port: 30005
     name: http
   selector:
     app: cmpt756s3
@@ -65,4 +65,4 @@ spec:
         image: 'ghcr.io/anan786/cmpt756s3:latest'
         imagePullPolicy: Always
         ports:
-        - containerPort: 30000
+        - containerPort: 30005
