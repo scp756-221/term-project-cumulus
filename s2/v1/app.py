@@ -99,12 +99,13 @@ def create_book():
         Author = content['author']
         BookTitle = content['booktitle']
         DatePublished = content['datepublished']
+        Availability = content['availability']
     except Exception:
         return json.dumps({"message": "error reading arguments"})
     url = db['name'] + '/' + db['endpoint'][1]
     response = requests.post(
         url,
-        json={"objtype": "book", "author": Author, "booktitle": BookTitle, "datepublished" : DatePublished},
+        json={"objtype": "book", "author": Author, "booktitle": BookTitle, "datepublished" : DatePublished, 'availability':Availability},
         headers={'Authorization': headers['Authorization']})
     return (response.json())
 
@@ -137,7 +138,7 @@ def test():
 # All database calls will have this prefix.  Prometheus metric
 # calls will not---they will have route '/metrics'.  This is
 # the conventional organization.
-app.register_blueprint(bp, url_prefix='/api/v1/music/')
+app.register_blueprint(bp, url_prefix='/api/v1/book/')
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
