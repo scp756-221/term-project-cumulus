@@ -62,7 +62,7 @@ def create_book(author, title, availability, datepublished, uuid):
         auth=build_auth(),
         json={"objtype": "Book",
               "author": author,
-              "title": title,
+              "booktitle": title,
               "availability": availability,
               "datepublished" : datepublished,
               "uuid": uuid})
