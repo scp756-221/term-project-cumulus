@@ -32,7 +32,7 @@ def build_auth():
     return requests.auth.HTTPBasicAuth('svc-loader', loader_token)
 
 
-def create_user(name, email, mobile, uuid):
+def create_user(uname, email, mobile, uuid):
     """
     Create a user.
     If a record already exists with the same fname, lname, and email,
@@ -43,7 +43,7 @@ def create_user(name, email, mobile, uuid):
         url,
         auth=build_auth(),
         json={"objtype": "user",
-              "name": name,
+              "username": uname,
               "email": email,
               "mobile": mobile,
               "uuid": uuid})
@@ -60,7 +60,7 @@ def create_book(author, title, availability, datepublished, uuid):
     response = requests.post(
         url,
         auth=build_auth(),
-        json={"objtype": "Book",
+        json={"objtype": "book",
               "author": author,
               "booktitle": title,
               "availability": availability,
@@ -85,14 +85,14 @@ if __name__ == '__main__':
     with open('{}/users/users.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
-        for name, email, mobile, uuid in rdr:
-            resp = create_user(name.strip(),
+        for username, email, mobile, uuid in rdr:
+            resp = create_user(username.strip(),
                                email.strip(),
                                mobile.strip(),
 							   uuid.strip())
             resp = check_resp(resp, 'user_id')
             if resp is None or resp != uuid:
-                print('Error creating user {} {} ({}), {}'.format(name,
+                print('Error creating user {} {} ({}), {}'.format(username,
                                                                   email,
                                                                   mobile,
                                                                   uuid))
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
         for author, title, availability, datepublished, uuid in rdr:
-            resp = create_booklist(author.strip(),
+            resp = create_book(author.strip(),
                                title.strip(),
                                availability.strip(),
                                datepublished.strip(),
