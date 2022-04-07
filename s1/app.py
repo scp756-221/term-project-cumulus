@@ -71,7 +71,7 @@ def update_user(user_id):
                         mimetype='application/json')
     try:
         content = request.get_json()
-        name = content['name']
+        username = content['username']
         email = content['email']
         mobile = content['mobile']
     except Exception:
@@ -80,7 +80,7 @@ def update_user(user_id):
     response = requests.put(
         url,
         params={"objtype": "user", "objkey": user_id},
-        json={"name": name, "email": email, "mobile": mobile})
+        json={"username": username, "email": email, "mobile": mobile})
     return (response.json())
 
 
@@ -93,7 +93,7 @@ def create_user():
     """
     try:
         content = request.get_json()
-        name = content['name']
+        username = content['username']
         email = content['email']
         mobile = content['mobile']
     except Exception:
@@ -102,7 +102,7 @@ def create_user():
     response = requests.post(
         url,
         json={"objtype": "user",
-              "name": name,
+              "username": username,
               "email": email,
               "mobile": mobile})
     return (response.json())
