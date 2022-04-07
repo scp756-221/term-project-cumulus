@@ -28,16 +28,16 @@ spec:
               name: svc-loader-token
               key: token
         volumeMounts:
-        - name: music
-          mountPath: "/data/music"
+        - name: book
+          mountPath: "/data/book"
           readOnly: true
         - name: users
           mountPath: "/data/users"
           readOnly: true
       volumes:
-      - name: music
+      - name: book
         configMap:
-          name: music
+          name: book
       - name: users
         configMap:
           name: users
