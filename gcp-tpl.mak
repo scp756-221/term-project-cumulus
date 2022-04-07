@@ -60,7 +60,6 @@ start:	showcontext
 	      --metadata disable-legacy-endpoints=true \
 	      --no-enable-basic-auth \
 	      --scopes "https://www.googleapis.com/auth/devstorage.read_only","https://www.googleapis.com/auth/logging.write","https://www.googleapis.com/auth/monitoring","https://www.googleapis.com/auth/servicecontrol","https://www.googleapis.com/auth/service.management.readonly","https://www.googleapis.com/auth/trace.append" \
-	      -- logging=SYSTEM \
 	      --no-enable-stackdriver-kubernetes \
 	      --addons HorizontalPodAutoscaling,HttpLoadBalancing \
 	      --enable-ip-alias --no-enable-master-authorized-networks --enable-shielded-nodes \
