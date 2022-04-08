@@ -67,6 +67,35 @@ object RUser {
 
 }
 
+object checkoutCoverage {
+  val feeder = csv("lend.csv").eager.circular
+  val rlend = forever("i") {
+    feed(feeder)
+
+    .exec(http("Update lend ${i}")
+      .put("/api/v1/lend/${book_id}")
+      .header("Content-Type", "application/json")
+      .body(StringBody(string = """
+        "author": "${author}",
+        "title": "${title}",
+        "availability": "${availability}"}
+      """))
+      .check(statums.is(200)))
+    .pause(1)
+    .exec(http("Update return ${i}")
+      .put("/api/v1/return/${book_id}")
+      .header("Content-Type", "application/json")
+      .body(StringBody(string = """
+        "author": "${author}",
+        "title": "${title}",
+        "availability": "${availability}"}
+      """))
+      .check(status.is(200)))
+    .pause(1)
+
+  }
+}
+
 /*
   After one S1 read, pause a random time between 1 and 60 s
 */
