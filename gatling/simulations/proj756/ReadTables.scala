@@ -65,6 +65,18 @@ object RUser {
     .pause(1)
   }
 
+object RCheckout {
+
+  val feeder = csv("checkout.csv").eager.circular
+
+  val rcheckout = forever("i") {
+    feed(feeder)
+    .exec(http("RCheckout ${i}")
+      .get("/api/v1/lend/${book_id}"))
+    .pause(1)
+  }
+
+
 }
 
 object checkoutCoverage {
