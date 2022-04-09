@@ -65,6 +65,18 @@ object RUser {
     .pause(1)
   }
 
+object RCheckout {
+
+  val feeder = csv("checkout.csv").eager.circular
+
+  val rcheckout = forever("i") {
+    feed(feeder)
+    .exec(http("RCheckout ${i}")
+      .get("/api/v1/lend/${book_id}"))
+    .pause(1)
+  }
+
+
 }
 
 object checkoutCoverage {
@@ -138,7 +150,7 @@ object RBookVarying {
 object RBoth {
 
   val u_feeder = csv("users.csv").eager.circular
-  val m_feeder = csv("music.csv").eager.random
+  val c_feeder = csv("checkout.csv").eager.random
   val b_feeder = csv("book.csv").eager.random
 
   val rboth = forever("i") {
@@ -150,6 +162,11 @@ object RBoth {
     feed(b_feeder)
     .exec(http("RBook ${i}")
       .get("/api/v1/book/${UUID}"))
+      .pause(1)
+
+    feed(c_feeder)
+    .exec(http("RCheckout ${i}")
+      .get("/api/v1/lend/${book_id}"))
       .pause(1)
   }
 
