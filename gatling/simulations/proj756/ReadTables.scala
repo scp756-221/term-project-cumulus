@@ -65,31 +65,37 @@ object RUser {
     .pause(1)
   }
 
+object RCheckout {
+
+  val feeder = csv("checkout.csv").eager.circular
+
+  val rcheckout = forever("i") {
+    feed(feeder)
+    .exec(http("RCheckout ${i}")
+      .get("/api/v1/lend/${book_id}"))
+    .pause(1)
+  }
+
+
 }
 
 object checkoutCoverage {
-  val feeder = csv("lend.csv").eager.circular
-  val rlend = forever("i") {
+  val feeder = csv("checkout.csv").eager.circular
+  val rlend =  {
     feed(feeder)
 
-    .exec(http("Update lend ${i}")
+    .exec(http("Update lend")
       .put("/api/v1/lend/${book_id}")
       .header("Content-Type", "application/json")
       .body(StringBody(string = """
         "author": "${author}",
-        "title": "${title}",
-        "availability": "${availability}"}
+        "booktitle": "${title}"}
       """))
-      .check(statums.is(200)))
+      .check(status.is(200)))
     .pause(1)
-    .exec(http("Update return ${i}")
+    .exec(http("Update return")
       .put("/api/v1/return/${book_id}")
       .header("Content-Type", "application/json")
-      .body(StringBody(string = """
-        "author": "${author}",
-        "title": "${title}",
-        "availability": "${availability}"}
-      """))
       .check(status.is(200)))
     .pause(1)
 
@@ -144,7 +150,7 @@ object RBookVarying {
 object RBoth {
 
   val u_feeder = csv("users.csv").eager.circular
-  val m_feeder = csv("music.csv").eager.random
+  val c_feeder = csv("checkout.csv").eager.random
   val b_feeder = csv("book.csv").eager.random
 
   val rboth = forever("i") {
@@ -156,6 +162,11 @@ object RBoth {
     feed(b_feeder)
     .exec(http("RBook ${i}")
       .get("/api/v1/book/${UUID}"))
+      .pause(1)
+
+    feed(c_feeder)
+    .exec(http("RCheckout ${i}")
+      .get("/api/v1/lend/${book_id}"))
       .pause(1)
   }
 
