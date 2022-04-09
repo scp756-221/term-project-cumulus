@@ -68,28 +68,22 @@ object RUser {
 }
 
 object checkoutCoverage {
-  val feeder = csv("lend.csv").eager.circular
-  val rlend = forever("i") {
+  val feeder = csv("checkout.csv").eager.circular
+  val rlend =  {
     feed(feeder)
 
-    .exec(http("Update lend ${i}")
+    .exec(http("Update lend")
       .put("/api/v1/lend/${book_id}")
       .header("Content-Type", "application/json")
       .body(StringBody(string = """
         "author": "${author}",
-        "title": "${title}",
-        "availability": "${availability}"}
+        "booktitle": "${title}"}
       """))
-      .check(statums.is(200)))
+      .check(status.is(200)))
     .pause(1)
-    .exec(http("Update return ${i}")
+    .exec(http("Update return")
       .put("/api/v1/return/${book_id}")
       .header("Content-Type", "application/json")
-      .body(StringBody(string = """
-        "author": "${author}",
-        "title": "${title}",
-        "availability": "${availability}"}
-      """))
       .check(status.is(200)))
     .pause(1)
 
