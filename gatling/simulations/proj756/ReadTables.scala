@@ -43,7 +43,7 @@ object RMusic {
 
 object RBook {
 
-  val feeder = csv("book.csv").eager.random
+  val feeder = csv("books.csv").eager.random
 
   val rbook = forever("i") {
     feed(feeder)
@@ -132,7 +132,7 @@ object RMusicVarying {
 }
 
 object RBookVarying {
-  val feeder = csv("book.csv").eager.circular
+  val feeder = csv("books.csv").eager.circular
 
   val rbook = forever("i") {
     feed(feeder)
@@ -151,7 +151,7 @@ object RBoth {
 
   val u_feeder = csv("users.csv").eager.circular
   val c_feeder = csv("checkout.csv").eager.random
-  val b_feeder = csv("book.csv").eager.random
+  val b_feeder = csv("books.csv").eager.random
 
   val rboth = forever("i") {
     feed(u_feeder)
