@@ -41,19 +41,6 @@ object RBook {
 
 }
 
-object RMusic {
-
-  val feeder = csv("music.csv").eager.random
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusic ${i}")
-      .get("/api/v1/music/${UUID}"))
-      .pause(1)
-  }
-
-}
-
 object RUser {
 
   val feeder = csv("users.csv").eager.circular
