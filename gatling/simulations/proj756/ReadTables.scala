@@ -106,17 +106,6 @@ object RUserVarying {
   After one S2 read, pause a random time between 1 and 60 s
 */
 
-object RMusicVarying {
-  val feeder = csv("music.csv").eager.circular
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusicVarying ${i}")
-      .get("/api/v1/music/${UUID}"))
-    .pause(1, 60)
-  }
-}
-
 object RBookVarying {
   val feeder = csv("books.csv").eager.circular
 
@@ -173,15 +162,6 @@ class ReadUserSim extends ReadTablesSim {
 
   setUp(
     scnReadUser.inject(constantConcurrentUsers(Utility.envVarToInt("USERS", 1)).during(10.minutes))
-  ).protocols(httpProtocol)
-}
-
-class ReadMusicSim extends ReadTablesSim {
-  val scnReadMusic = scenario("ReadMusic")
-    .exec(RMusic.rmusic)
-
-  setUp(
-    scnReadMusic.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
   ).protocols(httpProtocol)
 }
 
