@@ -1,4 +1,4 @@
-# CMPT 756 Music service
+# CMPT 756 Book service
 
 The book service maintains a list of books and the author that wrote
 them.
