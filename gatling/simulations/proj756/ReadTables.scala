@@ -165,15 +165,6 @@ class ReadUserSim extends ReadTablesSim {
   ).protocols(httpProtocol)
 }
 
-class ReadMusicSim extends ReadTablesSim {
-  val scnReadMusic = scenario("ReadMusic")
-    .exec(RMusic.rmusic)
-
-  setUp(
-    scnReadMusic.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
-  ).protocols(httpProtocol)
-}
-
 class ReadBookSim extends ReadTablesSim {
   val scnReadBook = scenario("ReadBook")
           .exec(RBook.rbook)
