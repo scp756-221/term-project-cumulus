@@ -234,7 +234,6 @@ class ReadBothVaryingSim extends ReadTablesSim {
   setUp(
     // Add one user per 10 s up to specified value
     scnReadBV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
-    scnReadMV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
     scnReadUV.inject(rampConcurrentUsers(1).to(users).during(10*users))
   ).protocols(httpProtocol)
 }
