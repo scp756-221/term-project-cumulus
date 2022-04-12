@@ -28,19 +28,6 @@ object Utility {
   }
 }
 
-object RMusic {
-
-  val feeder = csv("music.csv").eager.random
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusic ${i}")
-      .get("/api/v1/music/${UUID}"))
-      .pause(1)
-  }
-
-}
-
 object RBook {
 
   val feeder = csv("books.csv").eager.random
@@ -49,6 +36,19 @@ object RBook {
     feed(feeder)
     .exec(http("RBook ${i}")
       .get("/api/v1/book/${UUID}"))
+      .pause(1)
+  }
+
+}
+
+object RMusic {
+
+  val feeder = csv("music.csv").eager.random
+
+  val rmusic = forever("i") {
+    feed(feeder)
+    .exec(http("RMusic ${i}")
+      .get("/api/v1/music/${UUID}"))
       .pause(1)
   }
 
@@ -64,28 +64,27 @@ object RUser {
       .get("/api/v1/user/${UUID}"))
     .pause(1)
   }
+}
 
 object RCheckout {
 
   val feeder = csv("checkout.csv").eager.circular
 
-  val rcheckout = forever("i") {
+  val rreturn = forever("i") {
     feed(feeder)
     .exec(http("RCheckout ${i}")
-      .get("/api/v1/lend/${book_id}"))
+      .put("/api/v1/checkout/return/${UUID}"))
     .pause(1)
   }
-
-
 }
 
 object checkoutCoverage {
   val feeder = csv("checkout.csv").eager.circular
-  val rlend =  {
+  val rcheckout = forever("i") {
     feed(feeder)
 
-    .exec(http("Update lend")
-      .put("/api/v1/lend/${book_id}")
+    .exec(http("lend book")
+      .put("/api/v1/checkout/lend/${UUID}")
       .header("Content-Type", "application/json")
       .body(StringBody(string = """
         "author": "${author}",
@@ -93,8 +92,8 @@ object checkoutCoverage {
       """))
       .check(status.is(200)))
     .pause(1)
-    .exec(http("Update return")
-      .put("/api/v1/return/${book_id}")
+    .exec(http("return book")
+      .put("/api/v1/checkout/return/${UUID}")
       .header("Content-Type", "application/json")
       .check(status.is(200)))
     .pause(1)
@@ -183,10 +182,10 @@ class ReadTablesSim extends Simulation {
 
 class ReadUserSim extends ReadTablesSim {
   val scnReadUser = scenario("ReadUser")
-      .exec(RUser.ruser)
+        .exec(RUser.ruser)
 
   setUp(
-    scnReadUser.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnReadUser.inject(constantConcurrentUsers(Utility.envVarToInt("USERS", 1)).during(10.minutes))
   ).protocols(httpProtocol)
 }
 
@@ -201,10 +200,19 @@ class ReadMusicSim extends ReadTablesSim {
 
 class ReadBookSim extends ReadTablesSim {
   val scnReadBook = scenario("ReadBook")
-    .exec(RBook.rbook)
-
+          .exec(RBook.rbook)
+    
   setUp(
-    scnReadBook.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
+    scnReadBook.inject(constantConcurrentUsers(Utility.envVarToInt("USERS", 1)).during(10.minutes))
+  ).protocols(httpProtocol)
+}
+
+class CheckoutSim extends ReadTablesSim {
+  val scnReturnBook = scenario("ReturnBook")
+        .exec(checkoutCoverage.rcheckout)
+        
+  setUp(
+    scnReturnBook.inject(constantConcurrentUsers(Utility.envVarToInt("USERS", 1)).during(10.minutes))
   ).protocols(httpProtocol)
 }
 
