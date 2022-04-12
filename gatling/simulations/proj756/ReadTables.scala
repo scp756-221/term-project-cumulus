@@ -222,8 +222,6 @@ class CheckoutSim extends ReadTablesSim {
   is reached for each service.
 */
 class ReadBothVaryingSim extends ReadTablesSim {
-  val scnReadMV = scenario("ReadMusicVarying")
-    .exec(RMusicVarying.rmusic)
 
   val scnReadBV = scenario("ReadBookVarying")
     .exec(RBookVarying.rbook)
@@ -241,18 +239,3 @@ class ReadBothVaryingSim extends ReadTablesSim {
   ).protocols(httpProtocol)
 }
 
-/*
-  This doesn't work---it just reads the Music table.
-  We left it in here as possible inspiration for other work
-  (or a warning that this approach will fail).
- */
-/*
-class ReadBothSim extends ReadTablesSim {
-  val scnReadBoth = scenario("ReadBoth")
-    .exec(RBoth.rboth)
-
-  setUp(
-    scnReadBoth.inject(atOnceUsers(1))
-  ).protocols(httpProtocol)
-}
-*/
