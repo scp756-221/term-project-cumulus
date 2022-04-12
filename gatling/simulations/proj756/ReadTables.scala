@@ -41,19 +41,6 @@ object RBook {
 
 }
 
-object RMusic {
-
-  val feeder = csv("music.csv").eager.random
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusic ${i}")
-      .get("/api/v1/music/${UUID}"))
-      .pause(1)
-  }
-
-}
-
 object RUser {
 
   val feeder = csv("users.csv").eager.circular
@@ -142,8 +129,8 @@ object RBookVarying {
 }
 
 /*
-  Failed attempt to interleave reads from User and Music tables.
-  The Gatling EDSL only honours the second (Music) read,
+  Failed attempt to interleave reads from User and Books tables.
+  The Gatling EDSL only honours the second (Book) read,
   ignoring the first read of User. [Shrug-emoji] 
  */
 object RBoth {
@@ -234,7 +221,6 @@ class ReadBothVaryingSim extends ReadTablesSim {
   setUp(
     // Add one user per 10 s up to specified value
     scnReadBV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
-    scnReadMV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
     scnReadUV.inject(rampConcurrentUsers(1).to(users).during(10*users))
   ).protocols(httpProtocol)
 }
