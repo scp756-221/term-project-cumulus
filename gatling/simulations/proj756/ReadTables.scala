@@ -41,19 +41,6 @@ object RBook {
 
 }
 
-object RMusic {
-
-  val feeder = csv("music.csv").eager.random
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusic ${i}")
-      .get("/api/v1/music/${UUID}"))
-      .pause(1)
-  }
-
-}
-
 object RUser {
 
   val feeder = csv("users.csv").eager.circular
@@ -119,17 +106,6 @@ object RUserVarying {
   After one S2 read, pause a random time between 1 and 60 s
 */
 
-object RMusicVarying {
-  val feeder = csv("music.csv").eager.circular
-
-  val rmusic = forever("i") {
-    feed(feeder)
-    .exec(http("RMusicVarying ${i}")
-      .get("/api/v1/music/${UUID}"))
-    .pause(1, 60)
-  }
-}
-
 object RBookVarying {
   val feeder = csv("books.csv").eager.circular
 
@@ -142,8 +118,8 @@ object RBookVarying {
 }
 
 /*
-  Failed attempt to interleave reads from User and Music tables.
-  The Gatling EDSL only honours the second (Music) read,
+  Failed attempt to interleave reads from User and Books tables.
+  The Gatling EDSL only honours the second (Book) read,
   ignoring the first read of User. [Shrug-emoji] 
  */
 object RBoth {
@@ -189,15 +165,6 @@ class ReadUserSim extends ReadTablesSim {
   ).protocols(httpProtocol)
 }
 
-class ReadMusicSim extends ReadTablesSim {
-  val scnReadMusic = scenario("ReadMusic")
-    .exec(RMusic.rmusic)
-
-  setUp(
-    scnReadMusic.inject(atOnceUsers(Utility.envVarToInt("USERS", 1)))
-  ).protocols(httpProtocol)
-}
-
 class ReadBookSim extends ReadTablesSim {
   val scnReadBook = scenario("ReadBook")
           .exec(RBook.rbook)
@@ -234,7 +201,6 @@ class ReadBothVaryingSim extends ReadTablesSim {
   setUp(
     // Add one user per 10 s up to specified value
     scnReadBV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
-    scnReadMV.inject(rampConcurrentUsers(1).to(users).during(10*users)),
     scnReadUV.inject(rampConcurrentUsers(1).to(users).during(10*users))
   ).protocols(httpProtocol)
 }
