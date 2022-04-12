@@ -142,8 +142,8 @@ object RBookVarying {
 }
 
 /*
-  Failed attempt to interleave reads from User and Music tables.
-  The Gatling EDSL only honours the second (Music) read,
+  Failed attempt to interleave reads from User and Books tables.
+  The Gatling EDSL only honours the second (Book) read,
   ignoring the first read of User. [Shrug-emoji] 
  */
 object RBoth {
