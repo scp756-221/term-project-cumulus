@@ -1,6 +1,6 @@
 """
 SFU CMPT 756
-Sample application---music service.
+Sample application---Book service.
 """
 
 # Standard library modules
@@ -65,7 +65,7 @@ def list_all():
         return Response(json.dumps({"error": "missing auth"}),
                         status=401,
                         mimetype='application/json')
-    # list all songs here
+    # list all books here
     return {}
 
 
