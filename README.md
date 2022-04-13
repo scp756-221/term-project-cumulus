@@ -3,19 +3,17 @@
 
 This is the repo for CMPT 756 Project (Spring 2022).
 
-Our project 
-
 ## Main Directories
 
-`cluster`: Cluster and Service Configuration Files
-`db`: Database service
-`gatling`: Gatling script to perform load testing
-`loader`: Loader service to populate the database
-`logs`: Log Files
-`s1`: User service
-`s2`: Book service
-`s3`: Checkout service
-`tools`: Make 
+1. `cluster`: Cluster and Service Configuration Files
+2. `db`: Database service
+3. `gatling`: Gatling script to perform load testing
+4. `loader`: Loader service to populate the database
+5. `logs`: Log Files
+6. `s1`: User service
+7. `s2`: Book service
+8. `s3`: Checkout service
+9. `tools`: Make 
 
 ## Setup 
 
