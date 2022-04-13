@@ -97,7 +97,7 @@ if __name__ == '__main__':
                                                                   mobile,
                                                                   uuid))
 
-    with open('{}/books/books.csv'.format(resource_dir), 'r') as inp:
+    with open('{}/book/books.csv'.format(resource_dir), 'r') as inp:
         rdr = csv.reader(inp)
         next(rdr)  # Skip header
         for author, title, availability, datepublished, uuid in rdr:
