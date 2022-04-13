@@ -11,11 +11,13 @@ import argparse
 import os
 import sys
 
+from sqlalchemy import true
+
 # Installed packages
 
 # Local modules
 import create_tables
-import music
+import book
 
 # The services check only that we pass an authorization,
 # not whether it's valid
@@ -29,7 +31,7 @@ def parse_args():
     -------
     namespace
         A namespace of all the arguments, augmented with names
-        'user_url' and 'music_url'.
+        'user_url' and 'book_url'.
     """
     argp = argparse.ArgumentParser(
         'ci_test',
@@ -45,25 +47,25 @@ def parse_args():
         help="Port number of user service."
         )
     argp.add_argument(
-        'music_address',
-        help="DNS name or IP address of music service."
+        'book_address',
+        help="DNS name or IP address of book service."
         )
     argp.add_argument(
-        'music_port',
+        'book_port',
         type=int,
-        help="Port number of music service."
+        help="Port number of book service."
         )
     argp.add_argument(
         'table_suffix',
         help="Suffix to add to table names (not including leading "
              "'-').  If suffix is 'scp756-2022', the music table "
-             "will be 'Music-scp756-2022'."
+             "will be 'Book-scp756-2022'."
     )
     args = argp.parse_args()
     args.user_url = "http://{}:{}/api/v1/user/".format(
         args.user_address, args.user_port)
-    args.music_url = "http://{}:{}/api/v1/music/".format(
-        args.music_address, args.music_port)
+    args.book_url = "http://{}:{}/api/v1/book/".format(
+        args.book_address, args.book_port)
     return args
 
 
@@ -117,7 +119,7 @@ def setup(args):
         args.dynamodb_region,
         args.access_key_id,
         args.secret_access_key,
-        'Music-' + args.table_suffix,
+        'Book-' + args.table_suffix,
         'User-' + args.table_suffix
     )
 
@@ -128,7 +130,7 @@ def run_test(args):
     Parameters
     ----------
     args: namespace
-        The arguments for the test. Uses music_url.
+        The arguments for the test. Uses book_url.
 
     Prerequisites
     -------------
@@ -146,17 +148,17 @@ def run_test(args):
     -----
     This test is highly incomplete and needs substantial extension.
     """
-    mserv = music.Music(args.music_url, DUMMY_AUTH)
-    artist, song = ('Mary Chapin Carpenter', 'John Doe No. 24')
-    trc, m_id = mserv.create(artist, song)
+    mserv = book.Book(args.book_url, DUMMY_AUTH)
+    author, book, datepublished, availability = ('Dan Brown', 'Inferno', '06-05-2004', True)
+    trc, b_id = mserv.create(author, book, datepublished, availability)
     if trc != 200:
         sys.exit(1)
-    trc, ra, rs = mserv.read(m_id)
+    trc, rauthor, rbook = mserv.read(b_id)
     if trc == 200:
-        if artist != ra or song != rs:
+        if author != rauthor or book != rbook:
             # Fake HTTP code to indicate error
             trc = 601
-        mserv.delete(m_id)
+        mserv.delete(b_id)
     return trc
 
 

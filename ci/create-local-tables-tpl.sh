@@ -9,8 +9,8 @@ set -o xtrace
 aws dynamodb create-table \
   --endpoint-url http://0.0.0.0:8000 \
   --region us-west-2 \
-  --table-name Music-ZZ-REG-ID \
-  --attribute-definitions '[{ "AttributeName": "music_id", "AttributeType": "S" }]' \
+  --table-name Book-ZZ-REG-ID \
+  --attribute-definitions '[{ "AttributeName": "book_id", "AttributeType": "S" }]' \
   --key-schema '[{ "AttributeName": "music_id", "KeyType": "HASH" }]' \
   --provisioned-throughput '{"ReadCapacityUnits": 5, "WriteCapacityUnits": 5}'
 aws dynamodb create-table \
