@@ -17,7 +17,7 @@ else
   ip=0.0.0.0
 fi
 set -o xtrace
-curl --location --request POST "http://${ip}:30001/api/v1/music/" \
+curl --location --request POST "http://${ip}:30001/api/v1/book/" \
   --header 'Authorization: Bearer eyJ0eX' \
   --header 'Content-Type: application/json' \
-  --data-raw '{ "Artist": "Duran Duran", "SongTitle": "Rio" }'
+  --data-raw '{ "author": "Dan Brown", "booktitle": "Inferno", "datepublished":"06-05-2004", "availability": true }'
