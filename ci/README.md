@@ -22,7 +22,7 @@ The tests are defined in subdirectories, one for each version. Amongst other fil
 * `conftest.py`: `pytest` test fixtures that to be shared across all test files.
 * `test_*.py`: Test files. Any file with this prefix is a `pytest` test file and will be run in the test.
 * `create_tables.py`: Library to create the DynamoDB tables.
-* `music.py`: Python client library for the music service. Definition of a corresponding `user.py` for the user service is left as an exercise.
+* `book.py`: Python client library for the book service. Definition of a corresponding `user.py` for the user service is left as an exercise.
 
 The three application services, S1, S2, and DB, are defined in their respective directories. The appropriate directories are specified in `compose-tpl.yaml`.
 

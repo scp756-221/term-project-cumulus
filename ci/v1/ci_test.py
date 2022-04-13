@@ -58,7 +58,7 @@ def parse_args():
     argp.add_argument(
         'table_suffix',
         help="Suffix to add to table names (not including leading "
-             "'-').  If suffix is 'scp756-2022', the music table "
+             "'-').  If suffix is 'scp756-2022', the book table "
              "will be 'Book-scp756-2022'."
     )
     args = argp.parse_args()

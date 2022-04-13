@@ -1,5 +1,5 @@
 """
-Create the Music and User tables
+Create the book and User tables
 
 This is intended to be used within a continuous integration test.
 As such, it presumes that it is creating the tables in a local
@@ -18,8 +18,8 @@ import boto3
 
 
 # Function definitions
-def create_tables(url, region, access_key_id, secret_access_key, music, user):
-    """ Create the music and user tables in DynamoDB.
+def create_tables(url, region, access_key_id, secret_access_key, book, user):
+    """ Create the book and user tables in DynamoDB.
 
     Parameters
     ----------
@@ -39,8 +39,8 @@ def create_tables(url, region, access_key_id, secret_access_key, music, user):
         The secret access key value associated with the key ID. Local
         DynamodDB copies will accept any value, while the actual AWS
         service requires the secret key associated with the key ID.
-    music: string
-        Name of the music table.
+    book: string
+        Name of the book table.
     user: string
         Name of the user table.
     """
@@ -57,7 +57,7 @@ def create_tables(url, region, access_key_id, secret_access_key, music, user):
     These create_table() calls are asynchronous and so will run in parallel.
     """
     mt = dynamodb.create_table(
-        TableName=music,
+        TableName=book,
         AttributeDefinitions=[{
             "AttributeName": "book_id", "AttributeType": "S"}],
         KeySchema=[{"AttributeName": "book_id", "KeyType": "HASH"}],
