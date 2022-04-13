@@ -1,19 +1,17 @@
 [![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-f059dc9a6f8d3a56e377f745f24479a46679e63a5d9fe6f495e02850cd0d8118.svg)](https://classroom.github.com/online_ide?assignment_repo_id=7162630&assignment_repo_type=AssignmentRepo)
-# SFU CMPT 756 main project directory
+# SFU CMPT 756 PROJECT
 
-This is the repo for CMPT 756 Project (Spring 2022).
+We are team CUMULLUS and this is our repo for CMPT 756 Project (Spring 2022). Our Project mainly focuses on building microservices for a library scenario where a user can register and lend/return a book. In addition, we performed load testing using gatling simulation scripts and analysed the metrics using grafana and kiali dashboard.
 
 ## Main Directories
 
-1. `cluster`: Cluster and Service Configuration Files
+1. `cluster`: Cluster and Service related Configuration Files
 2. `db`: Database service
 3. `gatling`: Gatling script to perform load testing
 4. `loader`: Loader service to populate the database
-5. `logs`: Log Files
-6. `s1`: User service
-7. `s2`: Book service
-8. `s3`: Checkout service
-9. `tools`: Make 
+5. `s1`: User service
+6. `s2`: Book service
+7. `s3`: Checkout service
 
 ## Setup 
 
